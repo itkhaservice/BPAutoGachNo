@@ -30,10 +30,12 @@ jobs:
         run: |
           python cap_nhat_xoa_da_thanh_toan.py
 
-      - name: Upload Log File
+      - name: Upload Log & Debug Screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: execution-log
-          path: run.log
+          name: execution-artifacts
+          path: |
+            run.log
+            *.png
           retention-days: 30
