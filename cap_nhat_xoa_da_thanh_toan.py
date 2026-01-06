@@ -241,7 +241,7 @@ def main_orchestrator():
         
         logging.info(f"Tổng số dự án cần xử lý: {len(project_list)}")
         
-        for idx, project_val in enumerate(project_list, start=2):
+        for idx, project_val in enumerate(project_list, start=1):
             # Gọi hàm xử lý riêng biệt cho từng dự án
             process_single_project(project_val, idx, start_month_str)
             
