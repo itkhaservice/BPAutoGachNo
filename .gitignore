@@ -6,6 +6,12 @@ venv/
 env/
 .python-version
 
+# --- Ignore ALL Python scripts by default ---
+*.py
+
+# --- Except these specific files (Allow list) ---
+!cap_nhat_xoa_da_thanh_toan.py
+
 # --- IDE & Editors ---
 .idea/
 .vscode/
@@ -17,7 +23,7 @@ build/
 dist/
 *.spec
 
-# --- Playwright Browsers (Rất nặng, GitHub Actions sẽ tự tải) ---
+# --- Playwright Browsers ---
 ms-playwright/
 
 # --- Temporary Files ---
