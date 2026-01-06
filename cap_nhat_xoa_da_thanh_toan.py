@@ -82,11 +82,21 @@ def process_single_project(project_name, project_idx, start_month_str):
             page.locator("//a[@href='/fee-reports']").click()
             page.wait_for_load_state("networkidle")
 
-            # Mở Filter để tìm tháng Đã thanh toán cũ nhất
-            filter_btn = page.locator(
-                "xpath=//*[@id='root']/div[2]/main/div/div/div[1]/div/span/div/div[2]/div/button[2]")
-            if filter_btn.is_visible():
-                filter_btn.click()
+            # --- [NEW] PRE-FILTER: Lọc sẵn trạng thái "Đã thanh toán" để xác định tháng chính xác ---
+            try:
+                # Mở Filter
+                filter_btn = page.locator(
+                    "xpath=//*[@id='root']/div[2]/main/div/div/div[1]/div/span/div/div[2]/div/button[2]")
+                
+                # CẬP NHẬT: Chờ nút hiện thay vì kiểm tra tức thì
+                try:
+                    filter_btn.wait_for(state="visible", timeout=5000)
+                    filter_btn.click()
+                except:
+                    logging.warning(f"[{project_idx}] - Không thấy nút Filter sau 5s chờ.")
+                    # Nếu không mở được filter thì skip đoạn dưới
+                    raise Exception("Skip Filter interaction")
+
                 page.wait_for_timeout(500)
 
                 # Set điều kiện lọc
@@ -94,11 +104,16 @@ def process_single_project(project_name, project_idx, start_month_str):
                 page.locator("xpath=//*[@data-value='1']").click()  # Đã thanh toán
                 page.keyboard.press("Escape")
 
+                logging.info(f"[{project_idx}] - Đã Pre-Filter trạng thái 'Đã thanh toán'.")
                 # Chờ load dữ liệu sau lọc
                 page.wait_for_timeout(3000)
+            except Exception as e:
+                logging.warning(f"[{project_idx}] - Pre-Filter chưa hoàn tất: {e}")
 
             # --- TÌM THÁNG CŨ NHẤT ---
-            thangcunhat = "01/2000"
+            # Nếu không tìm thấy, mặc định gán bằng Tháng bắt đầu -> Để vòng lặp không chạy
+            thangcunhat = start_month_str 
+            
             try:
                 # Click sang trang cuối
                 page.locator("xpath=//*[@id='root']/div[2]/main/div/div/div[4]/div/div[1]/nav/ul/li[8]/button").click()
@@ -107,10 +122,15 @@ def process_single_project(project_name, project_idx, start_month_str):
                 # Lấy dữ liệu
                 thangcunhat_locator = page.locator('xpath=//*[@id="root"]/div[2]/main/div/div/div[2]/table/tbody/tr[1]/td[5]/div')
                 if thangcunhat_locator.is_visible():
-                    thangcunhat = thangcunhat_locator.text_content().strip()
-                logging.info(f"[{project_idx}] - Tháng cũ nhất: {thangcunhat}")
+                    thangcunhat_web = thangcunhat_locator.text_content().strip()
+                    # Kiểm tra xem text lấy được có đúng định dạng ngày tháng không
+                    datetime.strptime(f"01/{thangcunhat_web}", '%d/%m/%Y')
+                    thangcunhat = thangcunhat_web
+                    logging.info(f"[{project_idx}] - Tháng cũ nhất (từ Web): {thangcunhat}")
+                else:
+                    logging.info(f"[{project_idx}] - Không thấy dữ liệu. Có thể dự án chưa có phiếu Đã thanh toán nào.")
             except Exception:
-                logging.warning(f"[{project_idx}] - Không xác định được tháng cũ nhất, dùng mặc định.")
+                logging.warning(f"[{project_idx}] - Lỗi khi tìm tháng cũ nhất. Sẽ bỏ qua dự án này.")
 
             # Quay lại trang đầu
             try:
