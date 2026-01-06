@@ -33,7 +33,7 @@ def test_xoa_du_lieu_bao_phi_da_thanh_toan(page: Page):
     project_df = pd.read_excel(excel_path, sheet_name="BaoCao", header=None)
     project_list = project_df.iloc[1:, 0].tolist()
     wb = load_workbook(excel_path)
-    ws = wb["BaoCao1"]
+    ws = wb["BaoCao"]
 
     # 🌟 LẤY THÁNG HIỆN TẠI ĐỂ BẮT ĐẦU VÒNG LẶP
     # Yêu cầu: Xóa từ tháng thứ 3 về trước so với hiện tại
