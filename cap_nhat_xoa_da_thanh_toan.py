@@ -58,9 +58,13 @@ def process_single_project(project_name, project_idx, start_month_str):
             page.locator("input[name='password']").fill("Kha@@123")
             page.locator("button[type='submit']").click()
             
-            # Chờ đăng nhập thành công
-            page.wait_for_url("**/dashboard", timeout=30000) 
-            logging.info(f"[{project_idx}] Đăng nhập thành công.")
+            # Chờ đăng nhập thành công (Linh hoạt: Chỉ cần thoát khỏi trang login)
+            try:
+                page.wait_for_url(lambda u: "login" not in u, timeout=30000)
+                page.wait_for_load_state("networkidle")
+                logging.info(f"[{project_idx}] Đăng nhập thành công. URL: {page.url}")
+            except Exception as e:
+                logging.warning(f"[{project_idx}] Cảnh báo: Hết thời gian chờ chuyển trang, nhưng vẫn thử tiếp tục. Lỗi: {e}")
 
             # 2. CHỌN DỰ ÁN
             try:
