@@ -181,8 +181,7 @@ def process_single_project(project_name, project_idx, start_month_str):
         finally:
             # BƯỚC QUAN TRỌNG NHẤT: Đóng Browser để giải phóng RAM
             browser.close()
-            logging.info(f"--- Đã đóng Browser cho dự án {project_name} ---
-")
+            logging.info(f"--- Đã đóng Browser cho dự án {project_name} ---\n")
 
 def main_orchestrator():
     """Hàm điều phối chính: Đọc Excel và gọi xử lý từng dự án"""
