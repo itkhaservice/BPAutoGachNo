@@ -188,7 +188,10 @@ if __name__ == "__main__":
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s [%(levelname)s] %(message)s",
-        handlers=[logging.StreamHandler()]
+        handlers=[
+            logging.StreamHandler(),
+            logging.FileHandler("run.log", mode='w', encoding='utf-8')
+        ]
     )
 
     logging.info(">>> BẮT ĐẦU TOOL TỰ ĐỘNG XÓA DỮ LIỆU ĐÃ THANH TOÁN (DOCKER VERSION) <<<")
