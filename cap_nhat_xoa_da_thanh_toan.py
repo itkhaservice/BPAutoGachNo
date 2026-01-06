@@ -183,8 +183,7 @@ def process_single_project(project_name, project_idx, start_month_str):
                                 else:
                                     logging.error(f"[{project_idx}] - Không thấy nút Xác nhận xóa.")
                             else:
-                                logging.error(f"[{project_idx}] - Không thấy nút Thùng rác.")
-                                page.screenshot(path=f"debug_{project_idx}_{current_month_str.replace('/','_')}.png")
+                                logging.info(f"[{project_idx}] - Không thấy nút Xóa (có thể dữ liệu đã sạch). Bỏ qua.")
                         else:
                             logging.info(f"[{project_idx}] - Không có dữ liệu để xóa tháng {current_month_str}.")
                     
@@ -198,7 +197,6 @@ def process_single_project(project_name, project_idx, start_month_str):
 
         except Exception as e:
             logging.error(f"[{project_idx}] - Lỗi Fatal dự án {project_name}: {e}")
-            page.screenshot(path=f"fatal_{project_idx}.png")
         finally:
             # BƯỚC QUAN TRỌNG NHẤT: Đóng Browser để giải phóng RAM
             browser.close()
