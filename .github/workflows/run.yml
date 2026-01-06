@@ -9,6 +9,8 @@ on:
 jobs:
   run-script:
     runs-on: ubuntu-latest
+    env:
+      PYTHONUNBUFFERED: 1
 
     steps:
       - name: Checkout code
