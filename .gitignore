@@ -1,45 +1,26 @@
-# BỎ QUA TẤT CẢ FILE KHÔNG PHẢI CODE
-
-# Build / Output
-dist/
-build/
-out/
-release/
-bin/
-obj/
-.cache/
-temp/
-tmp/
-
-# Node
-node_modules/
-
-# Python build
+# --- Python & Virtual Env ---
 __pycache__/
 *.pyc
-*.pyo
+.venv/
+venv/
+env/
+.python-version
 
-# Các loại FILE NẶNG nên loại bỏ
-*.exe
-*.dll
-*.pak
-*.pkg
-*.pyz
-*.zip
-*.rar
-*.7z
-*.mp4
-*.mov
-*.avi
-*.iso
-*.tar
-*.gz
-
-# IDE files
-.vscode/
+# --- IDE & Editors ---
 .idea/
-*.log
-
-# System files
-Thumbs.db
+.vscode/
+*.swp
 .DS_Store
+
+# --- Build Artifacts ---
+build/
+dist/
+*.spec
+
+# --- Playwright Browsers (Rất nặng, GitHub Actions sẽ tự tải) ---
+ms-playwright/
+
+# --- Temporary Files ---
+tmp/
+*.log
+*.tmp
