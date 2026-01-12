@@ -18,9 +18,10 @@ else:
 @pytest.fixture(scope="session")
 def browser():
     with sync_playwright() as p:
-        # Chạy headless=True để phù hợp với GitHub Actions
+        # Chạy headless=True trên CI, False trên local để debug
+        is_ci = os.environ.get("CI") == "true"
         browser = p.chromium.launch(
-            headless=True,
+            headless=is_ci,
             args=["--no-sandbox", "--disable-setuid-sandbox", "--disable-blink-features=AutomationControlled"]
         )
         yield browser
@@ -34,54 +35,50 @@ def page(browser):
     context.close()
 
 def login(page: Page):
-    page.goto("https://qlvh.khaservice.com.vn/login")
-    page.locator("input[name='email']").fill("admin@khaservice.com.vn")
-    page.locator("input[name='password']").fill("Kha@@123")
-    page.locator("button[type='submit']").click()
-    page.wait_for_timeout(2000)
+    if "login" in page.url or "qlvh.khaservice.com.vn" not in page.url:
+        page.goto("https://qlvh.khaservice.com.vn/login")
+        page.locator("input[name='email']").fill("admin@khaservice.com.vn")
+        page.locator("input[name='password']").fill("Kha@@123")
+        page.locator("button[type='submit']").click()
+        page.wait_for_timeout(2000)
 
-# --- Các hàm lấy thông tin dữ liệu ---
-
+# --- 1. LẤY OVERVIEW (Cột B, C, D, E) ---
 def test_lay_thong_tin_du_an(page: Page):
     excel_path = os.path.join(BASE_DIR, "data.xlsx")
     project_df = pd.read_excel(excel_path, sheet_name="BaoCao", header=None)
     project_list = project_df.iloc[1:, 0].tolist()
-
     wb = load_workbook(excel_path)
     ws = wb["BaoCao"]
-
     login(page)
-
+    
     for idx, project_val in enumerate(project_list, start=2):
         try:
             print(f"[{idx}] Đang lấy Overview: {project_val}")
             page.locator("#combo-box-demo").click()
             page.locator("#combo-box-demo").fill(str(project_val))
             page.locator("#combo-box-demo-option-0").click()
-
             page.locator("a[href='/statistics/overview']").click()
             page.wait_for_load_state("networkidle")
             page.wait_for_timeout(1000)
-
+            
             ws[f"B{idx}"] = page.locator('//*[@id="root"]/div[2]/main/div/div/div/div[2]/div/div[1]/p[1]').inner_text()
             ws[f"C{idx}"] = page.locator('//*[@id="root"]/div[2]/main/div/div/div/div[3]/div/div[1]/p[1]').inner_text()
             ws[f"D{idx}"] = page.locator('//*[@id="root"]/div[2]/main/div/div/div/div[5]/div/div[1]/p[1]').inner_text()
             ws[f"E{idx}"] = page.locator('//*[@id="root"]/div[2]/main/div/div/div/div[6]/div/div[1]/p[1]').inner_text()
         except Exception as e:
-            print(f"Lỗi Overview tại {project_val}: {e}")
-
+            print(f"Lỗi Overview {project_val}: {e}")
+            
     wb.save(excel_path)
 
+# --- 2. LẤY SỐ LƯỢNG BÀI VIẾT (Cột F, G) ---
 def test_lay_so_luong_bai_viet(page: Page):
     excel_path = os.path.join(BASE_DIR, "data.xlsx")
     project_df = pd.read_excel(excel_path, sheet_name="BaoCao", header=None)
     project_list = project_df.iloc[1:, 0].tolist()
-
     wb = load_workbook(excel_path)
     ws = wb["BaoCao"]
-
     login(page)
-
+    
     for idx, project_val in enumerate(project_list, start=2):
         try:
             print(f"[{idx}] Đang lấy Posts: {project_val}")
@@ -90,69 +87,147 @@ def test_lay_so_luong_bai_viet(page: Page):
             page.locator("#combo-box-demo-option-0").click()
             page.wait_for_timeout(1000)
 
-            # Lấy tin tức
+            # --- TIN TỨC ---
             page.goto("https://qlvh.khaservice.com.vn/posts/news")
             page.wait_for_load_state("networkidle")
-            ws[f"F{idx}"] = page.locator('//*[@id="root"]/div[2]/main/div/div/div[2]/table/tbody/tr').count()
+            
+            # Chọn 1000 dòng
+            try:
+                page.locator("xpath=//*[@id='root']/div[2]/main/div/div/div[3]/div/div[2]/button").click()    
+                page.locator("xpath=//*[@id='menu-apartment-list-style1']/div[3]/ul/li[6]").click()
+                print("   -> Đã chọn hiển thị 1000 dòng tin tức...")
+                page.wait_for_timeout(5000) # Chờ 5s để bảng load lại
+            except: 
+                print("   -> Không chọn được dropdown 1000 dòng")
 
-            # Lấy thông báo
+            count_news = page.locator('//*[@id="root"]/div[2]/main/div/div/div[2]/table/tbody/tr').count()
+            ws[f"F{idx}"] = count_news
+            print(f"   -> Tin tức: {count_news}")
+
+            # --- THÔNG BÁO ---
             page.goto("https://qlvh.khaservice.com.vn/posts/notification")
             page.wait_for_load_state("networkidle")
-            ws[f"G{idx}"] = page.locator('//*[@id="root"]/div[2]/main/div/div/div[2]/table/tbody/tr').count()
-        except Exception as e:
-            print(f"Lỗi Posts tại {project_val}: {e}")
 
+            # Chọn 1000 dòng
+            try:
+                page.locator("xpath=//*[@id='root']/div[2]/main/div/div/div[3]/div/div[2]/button").click()    
+                page.locator("xpath=//*[@id='menu-apartment-list-style1']/div[3]/ul/li[6]").click()
+                print("   -> Đã chọn hiển thị 1000 dòng tin tức...")
+                page.wait_for_timeout(5000) # Chờ 5s để bảng load lại
+            except:
+                print("   -> Không chọn được dropdown 1000 dòng")
+
+            count_notif = page.locator('//*[@id="root"]/div[2]/main/div/div/div[2]/table/tbody/tr').count()
+            ws[f"G{idx}"] = count_notif
+            print(f"   -> Thông báo: {count_notif}")
+
+        except Exception as e:
+            print(f"Lỗi Posts {project_val}: {e}")
+            
     wb.save(excel_path)
 
+# --- 3. LẤY NGÀY BÀI VIẾT CUỐI (Cột H) ---
+def test_lay_thong_tin_bai_viet_ngay_cuoi(page: Page):
+    excel_path = os.path.join(BASE_DIR, "data.xlsx")
+    project_df = pd.read_excel(excel_path, sheet_name="BaoCao", header=None)
+    project_list = project_df.iloc[1:, 0].tolist()
+    wb = load_workbook(excel_path)
+    ws = wb["BaoCao"]
+    login(page)
+    
+    for idx, project_val in enumerate(project_list, start=2):
+        try:
+            print(f"[{idx}] Đang lấy Ngày cuối: {project_val}")
+            page.locator("#combo-box-demo").click()
+            page.locator("#combo-box-demo").fill(str(project_val))
+            page.locator("#combo-box-demo-option-0").click()
+            
+            dates = []
+            
+            # Kiểm tra Thông báo (Lấy dòng đầu tiên)
+            page.goto("https://qlvh.khaservice.com.vn/posts/notification")
+            page.wait_for_load_state("networkidle")
+            loc = page.locator('//*[@id="root"]/div[2]/main/div/div/div[2]/table/tbody/tr[1]/td[8]/div')
+            if loc.is_visible():
+                text = loc.inner_text().strip()
+                # Xử lý chuỗi ngày (ví dụ: "12/01/2026 14:00" -> lấy "12/01/2026")
+                try:
+                    date_str = text.split()[0]
+                    dates.append(datetime.strptime(date_str, '%d/%m/%Y'))
+                except: pass
+            
+            # Kiểm tra Tin tức (Lấy dòng đầu tiên)
+            page.goto("https://qlvh.khaservice.com.vn/posts/news")
+            page.wait_for_load_state("networkidle")
+            loc = page.locator('//*[@id="root"]/div[2]/main/div/div/div[2]/table/tbody/tr[1]/td[8]/div')
+            if loc.is_visible():
+                text = loc.inner_text().strip()
+                try:
+                    date_str = text.split()[0]
+                    dates.append(datetime.strptime(date_str, '%d/%m/%Y'))
+                except: pass
+            
+            if dates:
+                max_date = max(dates).strftime('%d/%m/%Y')
+                ws[f"H{idx}"] = max_date
+                print(f"   -> Ngày mới nhất: {max_date}")
+            else:
+                ws[f"H{idx}"] = "N/A"
+                
+        except Exception as e:
+            print(f"Lỗi Date {project_val}: {e}")
+            
+    wb.save(excel_path)
+
+# --- 4. LẤY BÁO PHÍ MỚI NHẤT (Cột I) ---
 def test_lay_thong_tin_bao_phi_moi_nhat(page: Page):
     excel_path = os.path.join(BASE_DIR, "data.xlsx")
     project_df = pd.read_excel(excel_path, sheet_name="BaoCao", header=None)
     project_list = project_df.iloc[1:, 0].tolist()
-
     wb = load_workbook(excel_path)
     ws = wb["BaoCao"]
-
     login(page)
-
+    
     for idx, project_val in enumerate(project_list, start=2):
         try:
             print(f"[{idx}] Đang lấy Fee Report: {project_val}")
             page.locator("#combo-box-demo").click()
             page.locator("#combo-box-demo").fill(str(project_val))
             page.locator("#combo-box-demo-option-0").click()
-            page.wait_for_timeout(2000)
+            page.wait_for_timeout(1000)
 
             page.goto("https://qlvh.khaservice.com.vn/fee-reports")
             page.wait_for_load_state("networkidle")
             
-            thangmoinhat_locator = page.locator('//*[@id="root"]/div[2]/main/div/div/div[2]/table/tbody/tr[1]/td[5]/div')
-            if thangmoinhat_locator.is_visible():
-                text = thangmoinhat_locator.text_content().strip()
+            loc = page.locator('//*[@id="root"]/div[2]/main/div/div/div[2]/table/tbody/tr[1]/td[5]/div')
+            if loc.is_visible():
+                text = loc.text_content().strip()
                 ws[f"I{idx}"] = text
+                print(f"   -> Phí mới nhất: {text}")
         except Exception as e:
-            print(f"Lỗi Fee tại {project_val}: {e}")
+            print(f"Lỗi Fee {project_val}: {e}")
 
     wb.save(excel_path)
 
-# --- BƯỚC CUỐI: XUẤT BÁO CÁO RA GITHUB ---
+# --- XUẤT BÁO CÁO RA GITHUB ---
 def test_z_summary_report():
     excel_path = os.path.join(BASE_DIR, "data.xlsx")
-    if not os.path.exists(excel_path):
-        return
-
+    if not os.path.exists(excel_path): return
+    
+    # Đọc lại file Excel để lấy dữ liệu mới nhất
     df = pd.read_excel(excel_path, sheet_name="BaoCao")
     
-    # Định dạng bảng Markdown
+    # Chuyển đổi dữ liệu thành bảng Markdown
+    # headers='keys' lấy dòng đầu tiên làm tiêu đề
     table = tabulate(df, headers='keys', tablefmt='github', showindex=False)
     
-    output_content = f"## 📊 Kết Quả Báo Cáo Dữ Liệu\n"
-    output_content += f"*Cập nhật lúc: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}*\n\n"
-    output_content += table
-    output_content += "\n\n---\n💡 **Mẹo:** Bạn có thể bôi đen bảng trên, nhấn `Ctrl+C` và dán trực tiếp vào Excel."
+    output = f"## 📊 Báo Cáo Tổng Hợp Dữ Liệu\n"
+    output += f"*Thời gian cập nhật: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}*\n\n"
+    output += table
+    output += "\n\n---\n💡 **Hướng dẫn:** Bôi đen bảng dữ liệu ở trên, nhấn `Ctrl+C`, sau đó mở Excel và nhấn `Ctrl+V` để dán."
 
-    # Xuất ra GitHub Job Summary
     if 'GITHUB_STEP_SUMMARY' in os.environ:
         with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as f:
-            f.write(output_content)
+            f.write(output)
     else:
-        print("\n" + output_content + "\n")
+        print("\n" + output + "\n")
