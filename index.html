@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BP Auto Gach No | Hướng dẫn sử dụng</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root { --primary-color: #d35400; --secondary-color: #e67e22; }
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
+        .hero { background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); color: white; padding: 80px 0; }
+        .step-number { background: var(--primary-color); color: white; width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; font-weight: bold; }
+        .instruction-card { background: white; border-radius: 15px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 5px solid var(--primary-color); }
+        .btn-download { background-color: #2c3e50; color: white; border-radius: 50px; padding: 12px 35px; font-weight: bold; transition: 0.3s; }
+        .btn-download:hover { background-color: #1a252f; color: white; transform: scale(1.05); }
+    </style>
+</head>
+<body>
+
+    <header class="hero text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-3">BP Auto Gach No</h1>
+            <p class="lead mb-4">Giải pháp tự động hóa cập nhật trạng thái thanh toán báo phí Kha Service.</p>
+            <a href="https://github.com/itkhaservice/BPAutoGachNo/releases" class="btn btn-download btn-lg">
+                <i class="bi bi-download me-2"></i>Tải bản cài đặt (v1.0.0)
+            </a>
+        </div>
+    </header>
+
+    <main class="container py-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="mb-4 fw-bold"><i class="bi bi-info-circle me-2"></i>Hướng dẫn chi tiết</h2>
+                
+                <div class="instruction-card">
+                    <h4><span class="step-number">1</span>Cài đặt phần mềm</h4>
+                    <p>Chạy file <code>BPAutoGachNo_Setup.exe</code>. Phần mềm sẽ tự động tạo shortcut ngoài màn hình Desktop với tên <strong>BP Auto Gach No</strong>.</p>
+                </div>
+
+                <div class="instruction-card">
+                    <h4><span class="step-number">2</span>Chuẩn bị danh sách</h4>
+                    <p>Bạn có thể nhập trực tiếp vào bảng trên giao diện hoặc chuẩn bị file Excel theo mẫu:</p>
+                    <ul>
+                        <li><strong>Cột 1:</strong> Mã căn hộ (VD: 02.05)</li>
+                        <li><strong>Cột 2:</strong> Tháng phí (VD: 05/2026)</li>
+                    </ul>
+                </div>
+
+                <div class="instruction-card">
+                    <h4><span class="step-number">3</span>Đăng nhập & Chạy</h4>
+                    <p>Nhập tài khoản quản trị Kha Service vào App. Nhấn <strong>BẮT ĐẦU CHẠY</strong>. Hệ thống sẽ mở trình duyệt tự động để thực hiện công việc.</p>
+                    <div class="alert alert-info py-2">
+                        <i class="bi bi-shield-check me-2"></i><strong>Lưu ý:</strong> Sau khi hoàn tất, chương trình sẽ tự động xóa sạch phiên làm việc để bảo mật.
+                    </div>
+                </div>
+
+                <div class="instruction-card">
+                    <h4><span class="step-number">4</span>Cơ chế xác minh</h4>
+                    <p>Phần mềm sẽ kiểm tra trạng thái trên màn hình trước khi nhấn Lưu. Nếu server phản hồi chậm, App sẽ tự động thử lại tối đa 3 lần để đảm bảo không bị sót căn hộ.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white py-4 text-center">
+        <p class="mb-0">Phát triển bởi <strong>CMTHANG</strong></p>
+        <p class="small text-secondary">Hỗ trợ kỹ thuật: itkhaservice</p>
+    </footer>
+
+</body>
+</html>
