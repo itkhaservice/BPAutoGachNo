@@ -1,4 +1,4 @@
-# BP Auto Gach No (v1.0.0)
+# BP Auto Gach No (v1.1.1)
 
 Công cụ tự động hóa quy trình gạch nợ (cập nhật trạng thái "Đã thanh toán") cho hệ thống Quản lý vận hành Kha Service.
 
@@ -18,7 +18,7 @@ Công cụ tự động hóa quy trình gạch nợ (cập nhật trạng thái 
     - Cột 2: Kỳ báo phí (Định dạng: MM/YYYY, ví dụ: 04/2026).
 
 ### 2. Cài đặt
-- Tải file bộ cài đặt: [BPAutoGachNo_Setup.exe](https://github.com/itkhaservice/BPAutoGachNo/releases).
+- Tải bộ cài đặt: [BPAutoGachNo v1.1.1 (MEGA.nz)](https://mega.nz/file/X0xQALoR#GyxXUrrmYUYoVri6_sIEkwgjI1Puqb9klsmtOVEu9CQ)
 - Chạy file Setup để cài đặt ứng dụng vào máy tính.
 - Biểu tượng **BP Auto Gach No** sẽ xuất hiện trên màn hình Desktop.
 
@@ -31,7 +31,7 @@ Công cụ tự động hóa quy trình gạch nợ (cập nhật trạng thái 
 6. Sau khi hoàn tất, trình duyệt sẽ tự động đóng và xóa sạch phiên làm việc.
 
 ## 👨‍💻 Thông tin phát triển
-- **Phiên bản:** 1.0.0
+- **Phiên bản:** 1.1.1
 - **Nguồn:** CMTHANG
 - **Công nghệ:** Python, Playwright, HTML/JS.
 
