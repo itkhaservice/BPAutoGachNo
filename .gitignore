@@ -1,33 +1,37 @@
-# --- Python & Virtual Env ---
+# --- Python & Environment ---
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
 .venv/
 venv/
 env/
 .python-version
 
-# --- Ignore ALL Python scripts by default ---
-*.py
-
-# --- Except these specific files (Allow list) ---
-!cap_nhat_xoa_da_thanh_toan.py
-!du_lieu_bao_cao.py
-
 # --- IDE & Editors ---
 .idea/
 .vscode/
 *.swp
+*.swo
 .DS_Store
 
-# --- Build Artifacts ---
+# --- Build Artifacts & Logs ---
 build/
 dist/
+Output/
+build_logs/
 *.spec
-
-# --- Playwright Browsers ---
-ms-playwright/
-
-# --- Temporary Files ---
-tmp/
 *.log
+automation_log.txt
+
+# --- Data & Temporary Files ---
+data_files/
+*.xlsx
 *.tmp
+tmp/
+
+# --- Playwright & Browsers (Large binaries) ---
+ms-playwright/
+pw-browser/
+
+# --- Executables ---
+*.exe

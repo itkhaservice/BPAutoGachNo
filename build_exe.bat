@@ -1,32 +1,45 @@
 @echo off
-cd /d "%~dp0"
 title Khaservice Automation FULL PACKER - ITKHA
+cd /d "%~dp0"
 
-:: XÃ³a bá» cache cÅ© Ä‘á»ƒ Ä‘Ã³ng gÃ³i má»›i hoÃ n toÃ n
-if exist dist del /q dist\*
+:: 1. Làm sạch thư mục cũ
+if exist dist rd /s /q dist
 if exist build rd /s /q build
 
-echo [1/4] Dang cai dat thu vien Python...
-pip install pyinstaller playwright pandas openpyxl --quiet
+:: Đảm bảo môi trường ảo có đầy đủ công cụ build
+echo [1/4] Chuan bi moi truong build trong venv...
+call .venv\Scripts\activate
+python -m pip install --upgrade pip --quiet
+python -m pip install pyinstaller playwright greenlet pandas openpyxl Pillow --quiet
 
-echo [2/4] Dang tai Chromium vao thu muc [pw-browser]...
-set PLAYWRIGHT_BROWSERS_PATH=pw-browser
-playwright install chromium
+echo [2/4] Dang chuan be trinh duyet Chromium...
+set PLAYWRIGHT_BROWSERS_PATH=%~dp0pw-browser
+python -m playwright install chromium
 
-echo [3/4] Dang bat dau dong goi (EXE se nang tam 200MB)...
-:: --onefile: 1 file duy nhat
-:: --windowed: Khong hien cua so den
-:: --add-data: ChÃ¨n giao diá»‡n vÃ  trÃ¬nh duyá»‡t
-:: --name: Äá»•i tÃªn file thÃ nh ITKHA.exe
-pyinstaller --noconfirm --onefile --windowed ^
-    --name "ITKHA" ^
+echo [3/4] Dang bat dau dong goi bang PyInstaller (VENV Mode)...
+:: Build ở chế độ onedir để copy thư viện vào dễ dàng
+python -m PyInstaller --noconfirm --onedir --windowed ^
+    --name "BPAutoGachNo" ^
+    --icon "Logo512.ico" ^
     --add-data "index.html;." ^
-    --add-data "pw-browser;pw-browser" ^
+    --collect-all playwright ^
+    --collect-all greenlet ^
+    --hidden-import "greenlet._greenlet" ^
+    --paths ".venv\Lib\site-packages" ^
     main.py
+
+echo [4/4] Dang sao chep "nguyen khoi" thu vien vao ban build (FIX TRIET DE)...
+:: Copy trình duyệt
+xcopy "pw-browser" "dist\BPAutoGachNo\pw-browser" /E /I /Y
+
+:: CHÉP ĐÈ TOÀN BỘ SITE-PACKAGES VÀO _INTERNAL
+:: Cách này đảm bảo không bao giờ thiếu bất kỳ file .pyd hay .dll nào trên máy khách
+xcopy ".venv\Lib\site-packages\*" "dist\BPAutoGachNo\_internal\" /E /I /Y /Q
 
 echo.
 echo ===================================================
-echo DONE! File EXE cua ban da san sang tai: [dist\ITKHA.exe]
-echo Copy file nay sang may khac va mo len de dung 1-Click.
+echo DONE! Ban build "Sieu Ben" da san sang tai: [dist\BPAutoGachNo]
+echo Moi thu vien da duoc chép tay vao de dam bao 100%% khong loi.
+echo Bay gio hay mo Inno Setup va Compile file [itkha_installer.iss].
 echo ===================================================
 pause
