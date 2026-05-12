@@ -1,4 +1,4 @@
-# BP Auto Gach No (v1.1.1)
+# BP Auto Gach No (v1.1.2)
 
 Công cụ tự động hóa quy trình gạch nợ (cập nhật trạng thái "Đã thanh toán") cho hệ thống Quản lý vận hành Kha Service.
 
@@ -10,6 +10,7 @@ Công cụ tự động hóa quy trình gạch nợ (cập nhật trạng thái 
 - **Giao diện hiện đại:** Điều khiển qua giao diện web trực quan, tích hợp nhật ký hoạt động thời gian thực.
 
 ## 🛠 Hướng dẫn sử dụng
+- **Trang chủ tài liệu:** [itkhaservice.github.io/BPAutoGachNo](https://itkhaservice.github.io/BPAutoGachNo/)
 
 ### 1. Chuẩn bị dữ liệu
 - File dữ liệu mẫu: `data.xlsx`.
@@ -18,7 +19,7 @@ Công cụ tự động hóa quy trình gạch nợ (cập nhật trạng thái 
     - Cột 2: Kỳ báo phí (Định dạng: MM/YYYY, ví dụ: 04/2026).
 
 ### 2. Cài đặt
-- Tải bộ cài đặt: [BPAutoGachNo v1.1.1 (MEGA.nz)](https://mega.nz/file/X0xQALoR#GyxXUrrmYUYoVri6_sIEkwgjI1Puqb9klsmtOVEu9CQ)
+- Tải bộ cài đặt: [BPAutoGachNo v1.1.2 (MEGA.nz)](https://mega.nz/file/Csg1hDIA#T9u8ju4-k9_q525jTTFcs0F4FyCMN7HASUtyK-4iThg)
 - Chạy file Setup để cài đặt ứng dụng vào máy tính.
 - Biểu tượng **BP Auto Gach No** sẽ xuất hiện trên màn hình Desktop.
 
@@ -31,7 +32,7 @@ Công cụ tự động hóa quy trình gạch nợ (cập nhật trạng thái 
 6. Sau khi hoàn tất, trình duyệt sẽ tự động đóng và xóa sạch phiên làm việc.
 
 ## 👨‍💻 Thông tin phát triển
-- **Phiên bản:** 1.1.1
+- **Phiên bản:** 1.1.2
 - **Nguồn:** CMTHANG
 - **Công nghệ:** Python, Playwright, HTML/JS.
 

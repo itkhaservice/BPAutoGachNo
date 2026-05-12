@@ -141,21 +141,25 @@ def start_gui():
                             tab2.wait_for_timeout(1500)
 
                             # 3. Mở chi tiết
-                            icon_view = tab2.locator("//*[@data-testid='VisibilityOutlinedIcon']").nth(1)       
+                            icon_view = tab2.locator("//*[@data-testid='VisibilityOutlinedIcon']").nth(1)
                             icon_view.wait_for(state="visible", timeout=5000)
                             icon_view.click()
 
-                            # --- LOGIC KIá»‚M TRA TRáº NG THÃI SAU KHI VÃ€O CHI TIáº¾T ---
+                            # --- LOGIC KIỂM TRA TRẠNG THÁI TRONG CHI TIẾT ---
                             dropdown_xpath = "//*[@id='simple-tabpanel-0']/div/div/div/form/div[2]/div[3]/div[2]/div"
                             tab2.wait_for_selector(dropdown_xpath, timeout=10000)
-
-                            # Äá»£i má»™t chÃºt Ä‘á»ƒ UI cáº­p nháº­t dÆ° liau (trÃ¡nh trá»‘ng chá»¯)
-                            tab2.wait_for_timeout(1000)
                             dropdown = tab2.locator(dropdown_xpath)
-                            current_status = dropdown.inner_text().strip()
 
-                            # Náº¿u tráº¡ng thÃ¡i ÄÃƒ LÃ€ "ÄÃ£ thanh toÃ¡n", thoÃ¡t ra ngay Ä‘á»ƒ trÃ¡nh spam
-                            if "ÄÃ£ thanh toÃ¡n" in current_status:
+                            # Đợi thông minh: Nếu thấy "Đã thanh toán" thì chờ 1.5s xem có đổi không.
+                            # Nếu là trạng thái khác (Chưa thanh toán...) thì chạy tiếp luôn.
+                            for _ in range(8):  # 8 * 200ms = 1.6s
+                                current_status = dropdown.inner_text().strip()
+                                if "Đã thanh toán" not in current_status:
+                                    break
+                                tab2.wait_for_timeout(200)
+
+                            current_status = dropdown.inner_text().strip()
+                            if "Đã thanh toán" in current_status:
                                 ui_log(f"   [~] {canho}: Da thanh toan tu truoc. Chuyen tiep.", "orange")
                                 tab2.locator("//*[@data-testid='ArrowBackIosNewIcon']").click()
                                 continue

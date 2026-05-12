@@ -102,42 +102,44 @@ def run_test(show_browser=False):
             
             # 2. Tìm kiếm mã căn hộ
             page.locator("//*[@id='input-search-list-style1']").fill(str(canho))
-            page.wait_for_timeout(2000) # Chờ kết quả search hiện ra
+            page.wait_for_timeout(1000) # Chờ kết quả search hiện ra
 
-            # --- TỐI ƯU: KIỂM TRA TRẠNG THÁI NGAY TẠI BẢNG (TRÁNH SPAM) ---
+            # --- VÀO CHI TIẾT ĐỂ KIỂM TRA CHO CHẮC CHẮN ---
             try:
-                # Lấy dòng đầu tiên trong kết quả tìm kiếm
-                first_row = page.locator("//*[@id='root']/div[2]/main/div/div/div[2]/table/tbody/tr[1]")
-                
-                if first_row.is_visible():
-                    row_text = first_row.inner_text()
-                    # Nếu thấy chữ "Đã thanh toán" ngay tại dòng này thì bỏ qua luôn
-                    if "Đã thanh toán" in row_text:
-                        logging.info(f">>> Căn hộ {canho} đã thanh toán trước đó. BỎ QUA để tránh spam.")
-                        page.locator("//*[@id='input-search-list-style1']").fill("")
-                        continue
-                    
-                    # Nếu chưa thanh toán, mới tiến hành nhấn vào icon Xem chi tiết
-                    # icon_view thường là icon thứ 2 trong dòng (nth(1))
-                    page.locator("//*[@data-testid='VisibilityOutlinedIcon']").nth(1).click()
-                else:
-                    logging.warning(f"Không tìm thấy dữ liệu cho căn hộ: {canho}. Chuyển căn tiếp theo.")
+                icon_view = page.locator("//*[@data-testid='VisibilityOutlinedIcon']").nth(1)
+                if not icon_view.is_visible(timeout=5000):
+                    logging.warning(f"Không tìm thấy căn hộ: {canho}. Bỏ qua.")
                     page.locator("//*[@id='input-search-list-style1']").fill("")
                     continue
+                icon_view.click()
             except Exception as e:
-                logging.error(f"Lỗi khi kiểm tra nhanh căn hộ {canho}: {e}")
+                logging.error(f"Lỗi khi mở chi tiết căn hộ {canho}: {e}")
                 page.locator("//*[@id='input-search-list-style1']").fill("")
                 continue
 
-            # --- PHẦN XỬ LÝ TRONG CHI TIẾT (Nếu chưa thanh toán) ---
+            # --- PHẦN XỬ LÝ TRONG CHI TIẾT ---
             dropdown_xpath = "//*[@id='simple-tabpanel-0']/div/div/div/form/div[2]/div[3]/div[2]/div"
             option_da_thanh_toan_xpath = "//li[@data-value='1']"
             btn_save = "//*[@data-testid='SaveOutlinedIcon']"
             btn_back = "//*[@data-testid='ArrowBackIosNewIcon']"
 
             try:
-                # Mở dropdown trạng thái
+                page.wait_for_selector(dropdown_xpath, timeout=10000)
                 dropdown = page.locator(dropdown_xpath)
+
+                # Chờ thông minh tránh placeholder "Đã thanh toán"
+                for _ in range(8):
+                    if "Đã thanh toán" not in dropdown.inner_text():
+                        break
+                    page.wait_for_timeout(200)
+
+                if "Đã thanh toán" in dropdown.inner_text():
+                    logging.info(f"   [~] {canho}: Đã thanh toán từ trước. Bỏ qua.")
+                    page.locator(btn_back).click()
+                    page.locator("//*[@id='input-search-list-style1']").fill("")
+                    continue
+
+                # Nếu chưa thanh toán thì tiến hành chọn
                 dropdown.click()
                 
                 # Chọn "Đã thanh toán"
