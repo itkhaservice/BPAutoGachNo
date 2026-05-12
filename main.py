@@ -95,7 +95,7 @@ def start_gui():
             return True
 
         tab1.expose_function("py_start_automation", handle_start_click)
-        html_url = "file://" + resource_path("index.html").replace("\\", "/")
+        html_url = "file://" + resource_path("app_ui.html").replace("\\", "/")
         tab1.goto(html_url)
 
         is_running = True
@@ -160,7 +160,7 @@ def start_gui():
 
                             current_status = dropdown.inner_text().strip()
                             if "Đã thanh toán" in current_status:
-                                ui_log(f"   [~] {canho}: Da thanh toan tu truoc. Chuyen tiep.", "orange")
+                                ui_log(f"   [~] {canho}: Da thanh toan tu truoc. Khong Luu. Chuyen tiep.", "orange")
                                 tab2.locator("//*[@data-testid='ArrowBackIosNewIcon']").click()
                                 continue
 

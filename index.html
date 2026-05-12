@@ -1,150 +1,153 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-    <title>Khaservice Automation - ITKHA</title>
-    <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BP Auto Gach No | Hướng dẫn sử dụng chi tiết</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
-        body { font-family: sans-serif; padding: 10px; background: #f0f2f5; margin: 0; }
-        .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: calc(100% - 60px); margin: 10px auto; }
-        .input-group { margin-bottom: 15px; display: flex; gap: 10px; align-items: center; position: relative; }
-        .input-group label { font-weight: bold; width: 100px; }
-        .input-group input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; flex: 1; }
-        .password-container { position: relative; flex: 1; display: flex; align-items: center; }
-        .password-container input { width: 100%; padding-right: 40px; }
-        .toggle-password {
-            position: absolute; right: 10px; cursor: pointer; color: #555;
-            user-select: none; font-size: 14px; font-weight: bold;
-        }
-        #example { margin-top: 15px; width: 100%; }
-        .btn {
-            background: #108042; color: white; border: none; padding: 12px 30px;
-            border-radius: 50px; cursor: pointer; font-weight: bold; font-size: 18px;
-            width: 100%; margin-top: 10px; transition: 0.3s;
-        }
-        .btn:hover { background: #0d6b35; transform: scale(1.02); }
-        .status { margin-top: 10px; color: #555; font-style: italic; font-weight: bold; text-align: center; }   
-        .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        h2 { margin: 0; color: #108042; }
-        .remember-me { display: flex; align-items: center; gap: 5px; font-size: 14px; margin-top: -10px; margin-bottom: 10px; color: #555; }
-        .footer-info { margin-top: 20px; text-align: center; font-size: 12px; color: #888; border-top: 1px solid #eee; padding-top: 10px; }
+        :root { --primary-color: #d35400; --secondary-color: #e67e22; --bg-light: #f8f9fa; }
+        body { background-color: var(--bg-light); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: #2c3e50; }
+        .hero { background: linear-gradient(135deg, #2c3e50 0%, #000000 100%); color: white; padding: 100px 0; border-bottom: 5px solid var(--primary-color); }
+        .section-title { position: relative; padding-bottom: 15px; margin-bottom: 35px; font-weight: 700; color: #2c3e50; }
+        .section-title::after { content: ''; position: absolute; left: 0; bottom: 0; width: 50px; height: 4px; background-color: var(--primary-color); }
+        .step-badge { background-color: var(--primary-color); color: white; width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 12px; }
+        .card-instruction { background: white; border: none; border-radius: 20px; padding: 35px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: 0.3s; }
+        .card-instruction:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+        .btn-main { background-color: var(--primary-color); color: white; border: none; border-radius: 50px; padding: 15px 40px; font-weight: 700; font-size: 1.1rem; transition: 0.3s; box-shadow: 0 4px 15px rgba(211, 84, 0, 0.3); }
+        .btn-main:hover { background-color: #ba4300; color: white; transform: scale(1.05); }
+        .feature-icon { font-size: 2.5rem; color: var(--primary-color); margin-bottom: 20px; }
+        code { color: #e83e8c; background-color: #f1f3f5; padding: 3px 8px; border-radius: 6px; font-weight: 600; }
+        .table-data { border-radius: 10px; overflow: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.03); }
+        .nav-custom { background: rgba(255,255,255,0.95) !important; backdrop-filter: blur(10px); }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header-flex">
-            <h2>🤖 BP Auto Gach No - v1.1.2</h2>
-            <div id="status" class="status">Sẵn sàng...</div>
-        </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-            <div class="input-group">
-                <label>Email:</label>
-                <input type="text" id="email" placeholder="admin@khaservice.com.vn">
+    <nav class="navbar navbar-expand-lg navbar-light nav-custom sticky-top border-bottom">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-dark" href="#"><i class="bi bi-lightning-charge-fill text-warning me-2"></i>BP Auto Gach No</a>
+            <span class="navbar-text ms-auto d-none d-md-block fw-semibold">Phiên bản v1.1.2 | Nguồn: CMTHANG</span>
+        </div>
+    </nav>
+
+    <header class="hero text-center">
+        <div class="container">
+            <h1 class="display-3 fw-bold mb-4">Tự động hóa Gạch nợ BP</h1>
+            <p class="lead fs-4 mb-5 opacity-75">Công cụ chuyên nghiệp giúp cập nhật trạng thái "Đã thanh toán" hàng loạt cho hệ thống Kha Service.</p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="https://mega.nz/file/z9ZHFQbI#JIRsSXIMvjbsxnKq5p6wFq5UW55-rN07JmcfsZHXLAw" target="_blank" class="btn btn-main btn-lg">
+                    <i class="bi bi-download me-2"></i>Tải bản Setup (v1.1.2)
+                </a>
+                <a href="#guide" class="btn btn-outline-light btn-lg rounded-pill px-4 fw-bold">Hướng dẫn sử dụng</a>
             </div>
-            <div class="input-group">
-                <label>Mật khẩu:</label>
-                <div class="password-container">
-                    <input type="password" id="password" placeholder="Mật khẩu hệ thống">
-                    <span class="toggle-password" onclick="togglePassword()">HIỆN</span>
+        </div>
+    </header>
+
+    <main class="container py-5">
+        <!-- Tính năng -->
+        <section class="mb-5 py-4">
+            <h2 class="section-title text-center mx-auto" style="max-width: fit-content;">Tại sao nên sử dụng?</h2>
+            <div class="row g-4 mt-2">
+                <div class="col-md-4 text-center">
+                    <div class="feature-icon"><i class="bi bi-shield-lock"></i></div>
+                    <h4>Ẩn danh & Bảo mật</h4>
+                    <p class="text-muted">Sử dụng chế độ <strong>Incognito</strong>. Không lưu lại tài khoản hay cookies sau mỗi lần chạy, đảm bảo an toàn tuyệt đối cho hệ thống.</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="feature-icon"><i class="bi bi-check2-all"></i></div>
+                    <h4>Cơ chế Xác minh</h4>
+                    <p class="text-muted">Bot tự động kiểm tra lại giao diện sau khi click. Chỉ khi xác nhận trạng thái đã đổi sang "Đã thanh toán" mới thực hiện nhấn Lưu.</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="feature-icon"><i class="bi bi-speedometer2"></i></div>
+                    <h4>Nhanh & Thông minh</h4>
+                    <p class="text-muted">Tự động tìm kiếm căn hộ theo kỳ phí. Nếu một căn hộ gặp lỗi, bot sẽ tự động bỏ qua và tiếp tục danh sách thay vì dừng lại.</p>
                 </div>
             </div>
+        </section>
+
+        <hr class="my-5 opacity-25">
+
+        <!-- Hướng dẫn chi tiết -->
+        <section id="guide" class="mb-5">
+            <h2 class="section-title">Hướng dẫn sử dụng chi tiết</h2>
+            
+            <div class="card-instruction">
+                <h4><span class="step-badge">1</span>Cài đặt phần mềm</h4>
+                <p>Sau khi tải file <code>BPAutoGachNo_Setup_v1.1.2.exe</code> từ link phía trên, bạn tiến hành chạy file để cài đặt. Phần mềm sẽ tự động tạo một biểu tượng <strong>BP Auto Gach No</strong> ngoài màn hình Desktop.</p>
+                <div class="alert alert-warning border-0 small mt-2">
+                    <i class="bi bi-info-circle-fill me-2"></i><strong>Lưu ý:</strong> Bản cài đặt đã bao gồm đầy đủ trình duyệt Chromium, bạn không cần cài thêm bất kỳ công cụ nào khác.
+                </div>
+            </div>
+
+            <div class="card-instruction">
+                <h4><span class="step-badge">2</span>Chuẩn bị dữ liệu đầu vào</h4>
+                <p>Phần mềm hỗ trợ 2 cách nhập dữ liệu:</p>
+                <ul>
+                    <li><strong>Cách 1:</strong> Nhập trực tiếp vào bảng trên giao diện ứng dụng.</li>
+                    <li><strong>Cách 2 (Khuyên dùng):</strong> Chuẩn bị file Excel với định dạng như sau:</li>
+                </ul>
+                <div class="table-responsive mt-3">
+                    <table class="table table-bordered table-data w-auto mx-auto">
+                        <thead class="table-dark">
+                            <tr><th>Cột 1 (Mã căn hộ)</th><th>Cột 2 (Kỳ phí)</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>01.01</td><td>04/2026</td></tr>
+                            <tr><td>15.08A</td><td>05/2026</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-muted small mt-2 text-center">* Lưu ý: Kỳ phí phải đúng định dạng <code>MM/YYYY</code>.</p>
+            </div>
+
+            <div class="card-instruction">
+                <h4><span class="step-badge">3</span>Cấu hình và Vận hành</h4>
+                <ol>
+                    <li class="mb-2">Mở ứng dụng <strong>BP Auto Gach No</strong>.</li>
+                    <li class="mb-2">Nhập <strong>Email</strong> và <strong>Mật khẩu</strong> quản trị hệ thống Kha Service.</li>
+                    <li class="mb-2">Copy danh sách từ Excel và dán vào khung dữ liệu trên App (hoặc nhập thủ công).</li>
+                    <li class="mb-2">Nhấn nút <strong>BẮT ĐẦU CHẠY</strong>.</li>
+                </ol>
+                <p>Lúc này, một cửa sổ trình duyệt tự động sẽ hiện lên. Bạn có thể quan sát Bot thực hiện đăng nhập và gạch nợ từng căn hộ một cách chính xác.</p>
+            </div>
+
+            <div class="card-instruction">
+                <h4><span class="step-badge">4</span>Hoàn tất và Bảo mật</h4>
+                <p>Sau khi chạy hết danh sách, Bot sẽ hiển thị thông báo <strong>"ĐÃ HOÀN TẤT"</strong> màu xanh lá. </p>
+                <p><strong>Cơ chế tự động:</strong></p>
+                <ul>
+                    <li>Trình duyệt tự động đóng lại.</li>
+                    <li>Toàn bộ thông tin đăng nhập và phiên làm việc (session) vừa rồi sẽ bị <strong>xóa sạch</strong> hoàn toàn khỏi bộ nhớ máy tính.</li>
+                    <li>Lần sau mở lên, hệ thống sẽ yêu cầu bạn nhập lại thông tin để đảm bảo an toàn tối đa.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Liên hệ -->
+        <section class="text-center py-4 bg-white rounded-4 shadow-sm">
+            <h3 class="fw-bold mb-3">Bạn cần hỗ trợ thêm?</h3>
+            <p class="text-muted mb-4">Mọi thắc mắc về kỹ thuật hoặc yêu cầu tính năng mới, vui lòng liên hệ đội ngũ itkhaservice.</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="https://itkhaservice.github.io/BPAutoGachNo/" class="btn btn-outline-primary rounded-pill px-4 fw-bold">
+                    <i class="bi bi-globe me-2"></i>Trang chủ Hướng dẫn
+                </a>
+                <a href="https://github.com/itkhaservice/BPAutoGachNo" class="btn btn-outline-dark rounded-pill px-4 fw-bold">
+                    <i class="bi bi-github me-2"></i>Xem trên GitHub
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-dark text-white py-5 mt-5 text-center border-top border-warning border-4">
+        <div class="container">
+            <p class="mb-2 fs-5">Phát triển và tối ưu bởi <strong>CMTHANG</strong></p>
+            <p class="text-secondary small mb-0">Công cụ hỗ trợ quản lý vận hành tòa nhà chuyên nghiệp.</p>
         </div>
+    </footer>
 
-        <div class="remember-me">
-            <input type="checkbox" id="remember" checked>
-            <label for="remember">Ghi nhớ Email và Mật khẩu cho lần sau</label>
-        </div>
-
-        <p style="background: #e8f5e9; padding: 10px; border-left: 5px solid #108042; margin-top: 0; font-size: 14px;">
-            1. Dán dữ liệu từ Excel (2 cột: <b>Căn hộ</b>, <b>Tháng</b>) vào bảng bên dưới.<br>
-            2. Nhấn <b>BẮT ĐẦU CHẠY</b> để hệ thống tự động thực hiện.
-        </p>
-
-        <div id="example"></div>
-        <button class="btn" onclick="startProcess()">🚀 BẮT ĐẦU CHẠY</button>
-        
-        <div class="footer-info">
-            Phiên bản v1.1.2 | Nguồn: CMTHANG | itkhaservice.github.io
-        </div>
-    </div>
-
-    <script>
-        // Tải thông tin đã lưu nếu có
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedEmail = localStorage.getItem('itkha_email');
-            const savedPass = localStorage.getItem('itkha_pass');
-            if (savedEmail) document.getElementById('email').value = savedEmail;
-            if (savedPass) document.getElementById('password').value = savedPass;
-        });
-
-        const initialData = Array.from({ length: 1000 }, () => ['', '']);
-        const container = document.getElementById('example');
-        const hot = new Handsontable(container, {
-            data: initialData,
-            colHeaders: ['Căn hộ', 'Tháng (MM/YYYY)'],
-            rowHeaders: true,
-            width: '100%',
-            height: 400,
-            stretchH: 'all',
-            contextMenu: true,
-            licenseKey: 'non-commercial-and-evaluation'
-        });
-
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const toggleText = document.querySelector('.toggle-password');
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleText.innerText = 'ẨN';
-            } else {
-                passwordInput.type = 'password';
-                toggleText.innerText = 'HIỆN';
-            }
-        }
-
-        async function startProcess() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const remember = document.getElementById('remember').checked;
-            const hotData = hot.getData().filter(row => row[0] && row[0].toString().trim() !== '');
-
-            if (!email || !password) {
-                alert('Vui lòng nhập Email và Mật khẩu!');
-                return;
-            }
-
-            // Lưu thông tin nếu được chọn
-            if (remember) {
-                localStorage.setItem('itkha_email', email);
-                localStorage.setItem('itkha_pass', password);
-            } else {
-                localStorage.removeItem('itkha_email');
-                localStorage.removeItem('itkha_pass');
-            }
-
-            if (hotData.length === 0) {
-                alert('Vui lòng nhập dữ liệu căn hộ!');
-                return;
-            }
-
-            document.getElementById('status').innerText = '⏳ Đang khởi động...';
-
-            try {
-                if (window.py_start_automation) {
-                    await window.py_start_automation(email, password, hotData);
-                }
-            } catch (err) {
-                console.error(err);
-                alert('Lỗi: ' + err.message);
-            }
-        }
-
-        function updateStatus(msg, color = '#555') {
-            const statusEl = document.getElementById('status');
-            statusEl.innerText = msg;
-            statusEl.style.color = color;
-        }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

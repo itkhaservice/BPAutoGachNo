@@ -21,7 +21,7 @@ echo [3/4] Dang bat dau dong goi bang PyInstaller (VENV Mode)...
 python -m PyInstaller --noconfirm --onedir --windowed ^
     --name "BPAutoGachNo" ^
     --icon "Logo512.ico" ^
-    --add-data "index.html;." ^
+    --add-data "app_ui.html;." ^
     --collect-all playwright ^
     --collect-all greenlet ^
     --hidden-import "greenlet._greenlet" ^

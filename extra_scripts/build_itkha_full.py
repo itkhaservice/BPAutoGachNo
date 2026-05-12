@@ -31,7 +31,7 @@ def build_itkha():
         "--onedir",
         "--windowed",
         f"--name={app_name}",
-        "--add-data=index.html;.",
+        "--add-data=app_ui.html;.",
         "--add-data=pw-browser;pw-browser",
         "--clean",
         "--noconfirm",
