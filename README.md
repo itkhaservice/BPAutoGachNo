@@ -19,7 +19,7 @@ Công cụ tự động hóa quy trình gạch nợ (cập nhật trạng thái 
     - Cột 2: Kỳ báo phí (Định dạng: MM/YYYY, ví dụ: 04/2026).
 
 ### 2. Cài đặt
-- Tải bộ cài đặt: [BPAutoGachNo v1.1.2 (MEGA.nz)](https://mega.nz/file/Csg1hDIA#T9u8ju4-k9_q525jTTFcs0F4FyCMN7HASUtyK-4iThg)
+- Tải bộ cài đặt: [BPAutoGachNo v1.1.2 (MEGA.nz)](https://mega.nz/file/z9ZHFQbI#JIRsSXIMvjbsxnKq5p6wFq5UW55-rN07JmcfsZHXLAw)
 - Chạy file Setup để cài đặt ứng dụng vào máy tính.
 - Biểu tượng **BP Auto Gach No** sẽ xuất hiện trên màn hình Desktop.
 
